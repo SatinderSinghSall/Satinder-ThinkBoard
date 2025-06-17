@@ -8,6 +8,8 @@ const NoteDetailPage = () => {
   const [note, setNote] = useState({ title: "", content: "" });
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const [deleting, setDeleting] = useState(false);
 
   const navigate = useNavigate();
   const { id } = useParams();
@@ -30,8 +32,7 @@ const NoteDetailPage = () => {
   }, [id]);
 
   const handleDelete = async () => {
-    if (!window.confirm("Are you sure you want to delete this note?")) return;
-
+    setDeleting(true);
     try {
       await api.delete(`/notes/${id}`);
       toast.success("Note deleted");
@@ -39,6 +40,9 @@ const NoteDetailPage = () => {
     } catch (error) {
       console.error("Error deleting note:", error);
       toast.error("Failed to delete note.");
+    } finally {
+      setDeleting(false);
+      setShowModal(false);
     }
   };
 
@@ -123,8 +127,8 @@ const NoteDetailPage = () => {
           <div className="flex justify-between items-center pt-4">
             <button
               className="btn btn-outline btn-error"
-              onClick={handleDelete}
-              disabled={saving}
+              onClick={() => setShowModal(true)}
+              disabled={saving || deleting}
             >
               <Trash2Icon className="h-5 w-5 mr-1" />
               Delete Note
@@ -147,6 +151,41 @@ const NoteDetailPage = () => {
           </div>
         </div>
       </div>
+
+      {/* Delete Confirmation Modal */}
+      {showModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex justify-center items-center">
+          <div className="bg-[#1F1F1F] p-6 rounded-xl w-full max-w-md shadow-xl border border-gray-700">
+            <h2 className="text-lg font-semibold text-white mb-4">
+              Confirm Deletion
+            </h2>
+            <p className="text-sm text-gray-400 mb-6">
+              Are you sure you want to delete this note? This action cannot be
+              undone.
+            </p>
+            <div className="flex justify-end gap-4">
+              <button
+                className="px-4 py-2 rounded-md bg-gray-700 text-white hover:bg-gray-600 transition"
+                onClick={() => setShowModal(false)}
+                disabled={deleting}
+              >
+                Cancel
+              </button>
+              <button
+                className={`px-4 py-2 rounded-md text-white transition ${
+                  deleting
+                    ? "bg-red-400 cursor-not-allowed"
+                    : "bg-red-600 hover:bg-red-500"
+                }`}
+                onClick={handleDelete}
+                disabled={deleting}
+              >
+                {deleting ? "Deleting..." : "Delete"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
