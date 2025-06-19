@@ -184,7 +184,7 @@ const NoteDetailPage = () => {
                 onClick={() => setShowModal(false)}
                 disabled={deleting}
               >
-                Cancel
+                No, Cancel
               </button>
               <button
                 className={`px-4 py-2 rounded-md text-white transition ${
@@ -195,7 +195,7 @@ const NoteDetailPage = () => {
                 onClick={handleDelete}
                 disabled={deleting}
               >
-                {deleting ? "Deleting..." : "Delete"}
+                {deleting ? "Deleting..." : "Yes, Delete"}
               </button>
             </div>
           </div>

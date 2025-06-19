@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router";
-import { PenSquareIcon, Trash2Icon } from "lucide-react";
+import { PenSquareIcon, Trash2Icon, UserCircle2 } from "lucide-react";
 import { formatDate } from "../lib/utils";
 import toast from "react-hot-toast";
 import api from "../lib/axios";
@@ -56,8 +56,15 @@ function NoteCard({ note, setNotes }) {
           </p>
 
           <div className="flex justify-between items-center pt-4 border-t border-base-300">
-            <span className="text-xs text-gray-500">
-              {formatDate(new Date(note.createdAt))}
+            <span className="text-xs text-gray-400 flex items-center gap-2">
+              <span>{formatDate(new Date(note.createdAt))}</span>
+              <span className="text-gray-600">•</span>
+              <div className="flex items-center gap-1 text-white/80">
+                <UserCircle2 className="size-4 text-[#00FF9D]" />
+                <span className="font-semibold text-[#00FF9D]">
+                  {note.noteBy}
+                </span>
+              </div>
             </span>
 
             <div className="flex items-center gap-3">
@@ -96,7 +103,7 @@ function NoteCard({ note, setNotes }) {
                 className="px-4 py-2 rounded-md bg-gray-700 text-white hover:bg-gray-600 transition"
                 onClick={() => setShowModal(false)}
               >
-                Cancel
+                No, Cancel
               </button>
               <button
                 className={`px-4 py-2 rounded-md text-white transition ${
@@ -107,7 +114,7 @@ function NoteCard({ note, setNotes }) {
                 onClick={handleDelete}
                 disabled={loading}
               >
-                {loading ? "Deleting..." : "Delete"}
+                {loading ? "Deleting..." : "Yes, Delete"}
               </button>
             </div>
           </div>
