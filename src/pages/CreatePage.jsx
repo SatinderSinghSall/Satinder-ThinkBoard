@@ -8,13 +8,14 @@ import toast from "react-hot-toast";
 const CreatePage = () => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
+  const [noteBy, setNoteBy] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!title.trim() || !content.trim()) {
+    if (!title.trim() || !content.trim() || !noteBy.trim()) {
       toast.error("Enter all the fields.");
       return;
     }
@@ -24,6 +25,7 @@ const CreatePage = () => {
       const request = await api.post("/notes", {
         title,
         content,
+        noteBy,
       });
       toast.success("Note created successfully!");
       navigate("/");
@@ -79,6 +81,17 @@ const CreatePage = () => {
               className="textarea textarea-bordered w-full min-h-[120px]"
               onChange={(e) => setContent(e.target.value)}
             ></textarea>
+          </div>
+
+          <div>
+            <label className="label mb-1 text-base font-medium text-base-content">
+              Note By
+            </label>
+            <input
+              placeholder="Enter your name..."
+              className="input input-bordered w-full"
+              onChange={(e) => setNoteBy(e.target.value)}
+            />
           </div>
 
           <div className="flex justify-end">

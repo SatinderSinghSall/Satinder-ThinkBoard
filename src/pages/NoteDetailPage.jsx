@@ -49,6 +49,7 @@ const NoteDetailPage = () => {
   const handleSave = async () => {
     const trimmedTitle = note.title?.trim();
     const trimmedContent = note.content?.trim();
+    const trimmedNoteBy = note.noteBy?.trim();
 
     if (!trimmedTitle || !trimmedContent) {
       toast.error("Please enter a title and content.");
@@ -60,6 +61,7 @@ const NoteDetailPage = () => {
       await api.put(`/notes/${id}`, {
         title: trimmedTitle,
         content: trimmedContent,
+        noteBy: trimmedNoteBy,
       });
       toast.success("Note updated successfully!");
       navigate("/");
@@ -121,6 +123,19 @@ const NoteDetailPage = () => {
               value={note.content}
               disabled={saving}
               onChange={handleChange("content")}
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-base-content mb-1">
+              Note By
+            </label>
+            <input
+              className="input input-bordered w-full focus:ring-2 focus:ring-pink-500 transition"
+              placeholder="Enter your name..."
+              value={note.noteBy}
+              disabled={saving}
+              onChange={handleChange("noteBy")}
             />
           </div>
 
