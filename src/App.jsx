@@ -1,6 +1,8 @@
 import { Routes, Route } from "react-router";
 
 //! Pages:
+import Login from "./pages/Login";
+import Signup from "./pages/Signup";
 import HomePage from "./pages/HomePage";
 import CreatePage from "./pages/CreatePage";
 import NoteDetailPage from "./pages/NoteDetailPage";
@@ -8,6 +10,7 @@ import NoteDetailPage from "./pages/NoteDetailPage";
 //! Components:
 import NavBar from "./components/NavBar";
 import Footer from "./components/Footer";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 import "./App.css";
 
@@ -16,16 +19,40 @@ function App() {
     <div data-theme="forest" className="min-h-screen flex flex-col">
       <NavBar />
 
-      {/* Main content area that grows to fill the screen */}
       <main className="flex-grow">
         <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="create-note" element={<CreatePage />} />
-          <Route path="detail-note/:id" element={<NoteDetailPage />} />
+          {/* Auth Routes */}
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
+
+          {/* Protected Routes */}
+          <Route
+            path="/"
+            element={
+              <ProtectedRoute>
+                <HomePage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/create-note"
+            element={
+              <ProtectedRoute>
+                <CreatePage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/detail-note/:id"
+            element={
+              <ProtectedRoute>
+                <NoteDetailPage />
+              </ProtectedRoute>
+            }
+          />
         </Routes>
       </main>
 
-      {/* Sticky footer at the bottom */}
       <Footer />
     </div>
   );
