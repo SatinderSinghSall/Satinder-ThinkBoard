@@ -9,7 +9,7 @@ const NavBar = () => {
   return (
     <header className="sticky top-0 z-50 bg-base-300 border-b border-base-content/10 shadow-sm">
       <div className="mx-auto max-w-6xl p-4">
-        <div className="flex flex-wrap items-center justify-between">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
           <Link to="/">
             <h1 className="text-2xl sm:text-3xl font-bold text-primary font-mono tracking-tighter">
               ThinkBoard
@@ -36,10 +36,10 @@ const NavBar = () => {
               </>
             ) : (
               <>
-                <Link to="/login" className="btn btn-outline btn-sm">
+                <Link to="/login" className="btn btn-outline btn-sm sm:btn-md">
                   Login
                 </Link>
-                <Link to="/signup" className="btn btn-primary btn-sm">
+                <Link to="/signup" className="btn btn-primary btn-sm sm:btn-md">
                   Sign up
                 </Link>
               </>
