@@ -17,8 +17,20 @@ const HomePage = () => {
   useEffect(() => {
     const fetchNotes = async () => {
       try {
-        const response = await api.get("/notes");
-        // console.log(response.data);
+        const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+        const token = userInfo?.token;
+
+        if (!token) {
+          toast.error("You're not logged in.");
+          return;
+        }
+
+        const response = await api.get("/notes", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
         setNotes(response.data);
         setIsRateLimited(false);
       } catch (error) {

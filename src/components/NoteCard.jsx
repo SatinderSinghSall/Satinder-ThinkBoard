@@ -62,7 +62,7 @@ function NoteCard({ note, setNotes }) {
               <div className="flex items-center gap-1 text-white/80">
                 <UserCircle2 className="size-4 text-[#00FF9D]" />
                 <span className="font-semibold text-[#00FF9D]">
-                  {note.noteBy}
+                  {note.noteBy?.name || "Unknown User"}
                 </span>
               </div>
             </span>

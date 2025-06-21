@@ -1,8 +1,19 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: "https://satinder-thinkboard-backend-codebase.onrender.com/api/",
+  baseURL: "https://satinder-thinkboard-backend-codebase.onrender.com/api",
 });
+
+api.interceptors.request.use(
+  (config) => {
+    const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+    if (userInfo?.token) {
+      config.headers.Authorization = `Bearer ${userInfo.token}`;
+    }
+    return config;
+  },
+  (error) => Promise.reject(error)
+);
 
 /*
   API:
