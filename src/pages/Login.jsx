@@ -8,10 +8,19 @@ function Login() {
   const [form, setForm] = useState({ email: "", password: "" });
   const { login } = useUser();
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    setError("");
+
+    if (!form.email.trim() || !form.password.trim()) {
+      setError("Please fill in both email and password.");
+      return;
+    }
+
     setLoading(true);
     try {
       const res = await axios.post("/users/login", form);
@@ -20,7 +29,9 @@ function Login() {
       navigate("/");
     } catch (err) {
       console.log(err || "Login failed");
-      toast.error(err.response?.data?.message || "Login failed");
+      const message = err.response?.data?.message || "Login failed";
+      setError(message);
+      toast.error(message);
     } finally {
       setLoading(false);
     }
@@ -38,7 +49,6 @@ function Login() {
             <input
               type="email"
               placeholder="Enter your email"
-              required
               className="w-full px-4 py-2 bg-gray-800 text-white border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
               onChange={(e) => setForm({ ...form, email: e.target.value })}
             />
@@ -49,11 +59,16 @@ function Login() {
             <input
               type="password"
               placeholder="Enter your password"
-              required
               className="w-full px-4 py-2 bg-gray-800 text-white border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
               onChange={(e) => setForm({ ...form, password: e.target.value })}
             />
           </div>
+
+          {error && (
+            <div className="text-sm text-red-400 bg-red-900/20 border border-red-500/20 rounded-md p-2 px-3">
+              {error}
+            </div>
+          )}
 
           <button
             type="submit"

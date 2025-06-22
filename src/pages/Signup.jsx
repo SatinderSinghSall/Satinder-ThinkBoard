@@ -8,10 +8,18 @@ function Signup() {
   const [form, setForm] = useState({ name: "", email: "", password: "" });
   const { login } = useUser();
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError("");
+
+    if (!form.name.trim() || !form.email.trim() || !form.password.trim()) {
+      setError("Please fill in all fields.");
+      return;
+    }
+
     setLoading(true);
     try {
       const res = await axios.post("/users/register", form);
@@ -20,7 +28,9 @@ function Signup() {
       navigate("/");
     } catch (err) {
       console.log(err || "Signup failed");
-      toast.error(err.response?.data?.message || "Signup failed");
+      const message = err.response?.data?.message || "Signup failed";
+      setError(message);
+      toast.error(message);
     } finally {
       setLoading(false);
     }
@@ -38,7 +48,6 @@ function Signup() {
             <input
               type="text"
               placeholder="Your name"
-              required
               className="w-full px-4 py-2 bg-gray-800 text-white border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
               onChange={(e) => setForm({ ...form, name: e.target.value })}
             />
@@ -49,7 +58,6 @@ function Signup() {
             <input
               type="email"
               placeholder="Enter your email"
-              required
               className="w-full px-4 py-2 bg-gray-800 text-white border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
               onChange={(e) => setForm({ ...form, email: e.target.value })}
             />
@@ -60,11 +68,16 @@ function Signup() {
             <input
               type="password"
               placeholder="Create a password"
-              required
               className="w-full px-4 py-2 bg-gray-800 text-white border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
               onChange={(e) => setForm({ ...form, password: e.target.value })}
             />
           </div>
+
+          {error && (
+            <div className="text-sm text-red-400 bg-red-900/20 border border-red-500/20 rounded-md p-2 px-3">
+              {error}
+            </div>
+          )}
 
           <button
             type="submit"
