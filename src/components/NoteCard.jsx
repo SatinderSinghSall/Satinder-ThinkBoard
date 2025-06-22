@@ -35,8 +35,7 @@ function NoteCard({ note, setNotes }) {
 
   const handleEdit = (e, id) => {
     e.preventDefault();
-    toast.error("Under development!");
-    navigate();
+    navigate(`/detail-note/${id}`);
   };
 
   return (
