@@ -7,3 +7,5 @@ App Highlights:
 ⚙️ Rate Limiting with Upstash Redis — a Real-World Concept Explained Simply
 🚀 Completely Responsive UI
 🌐 Explore HTTP Methods, Status Codes & SQL vs NoSQL
+
+![image](https://github.com/user-attachments/assets/1eba304b-2f5e-4c83-b227-22d9cae9f6fd)
